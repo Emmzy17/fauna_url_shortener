@@ -18,13 +18,16 @@ def hello():
 
 def generate_identifier(n=6):
     identifier = ''
-    for i in range(6):
+    for i in range(n):
         identifier+=random.choice(string.ascii_letters)
     return identifier
 
 @app.route('/generate/<path:address>/')
 def generate(address):
     identifier = generate_identifier()
+    if not (address.startswith("http://") or address.startswith("https://")):
+        address = "http://" + address
+
     client.query(q.create(q.collection('urls'),
     {            'data':{
                 'identifier':identifier, 
